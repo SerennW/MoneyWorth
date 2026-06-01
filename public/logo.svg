@@ -1,0 +1,218 @@
+<svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <!-- Background: #a855f7 as midpoint, darker/lighter variants -->
+    <radialGradient id="bgGrad" cx="40%" cy="35%" r="70%">
+      <stop offset="0%"   stop-color="#7e22ce"/>
+      <stop offset="55%"  stop-color="#6b21a8"/>
+      <stop offset="100%" stop-color="#3b0764"/>
+    </radialGradient>
+
+    <!-- Subtle edge glow -->
+    <radialGradient id="glowRing" cx="50%" cy="50%" r="50%">
+      <stop offset="68%" stop-color="transparent"/>
+      <stop offset="100%" stop-color="#a855f7" stop-opacity="0.35"/>
+    </radialGradient>
+
+    <!-- Plate surface -->
+    <radialGradient id="plateGrad" cx="40%" cy="30%" r="65%">
+      <stop offset="0%"   stop-color="#FAFAFA"/>
+      <stop offset="100%" stop-color="#D1D5DB"/>
+    </radialGradient>
+
+    <!-- Plate rim -->
+    <radialGradient id="plateRim" cx="40%" cy="30%" r="65%">
+      <stop offset="0%"   stop-color="#E5E7EB"/>
+      <stop offset="100%" stop-color="#9CA3AF"/>
+    </radialGradient>
+
+    <!-- Gold coin face -->
+    <radialGradient id="coinGrad" cx="35%" cy="28%" r="60%">
+      <stop offset="0%"   stop-color="#FFF176"/>
+      <stop offset="45%"  stop-color="#F5C518"/>
+      <stop offset="100%" stop-color="#B8860B"/>
+    </radialGradient>
+
+    <!-- Bun top -->
+    <radialGradient id="bunTopGrad" cx="38%" cy="28%" r="62%">
+      <stop offset="0%"   stop-color="#FDE68A"/>
+      <stop offset="60%"  stop-color="#F59E0B"/>
+      <stop offset="100%" stop-color="#92400E"/>
+    </radialGradient>
+
+    <!-- Bun bottom -->
+    <radialGradient id="bunBotGrad" cx="38%" cy="28%" r="62%">
+      <stop offset="0%"   stop-color="#FCD34D"/>
+      <stop offset="100%" stop-color="#B45309"/>
+    </radialGradient>
+
+    <!-- Gold badge -->
+    <radialGradient id="badgeGrad" cx="38%" cy="32%" r="60%">
+      <stop offset="0%"   stop-color="#FFF9C4"/>
+      <stop offset="40%"  stop-color="#FFD700"/>
+      <stop offset="100%" stop-color="#B8860B"/>
+    </radialGradient>
+
+    <!-- Drop shadow -->
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="8" stdDeviation="12" flood-color="#1a0533" flood-opacity="0.75"/>
+    </filter>
+
+    <!-- Soft glow -->
+    <filter id="glow" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="5" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+
+    <!-- Gold glow for badge & top coin -->
+    <filter id="goldGlow" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="7" result="blur"/>
+      <feFlood flood-color="#FFD700" flood-opacity="0.28" result="color"/>
+      <feComposite in="color" in2="blur" operator="in" result="colorBlur"/>
+      <feMerge><feMergeNode in="colorBlur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+
+    <!-- Plate shadow -->
+    <filter id="plateShadow" x="-10%" y="-10%" width="120%" height="130%">
+      <feGaussianBlur stdDeviation="10" result="blur"/>
+      <feFlood flood-color="#1a0533" flood-opacity="0.45" result="color"/>
+      <feComposite in="color" in2="blur" operator="in"/>
+      <feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+
+  <!-- ===== BACKGROUND ===== -->
+  <rect width="400" height="400" rx="88" fill="url(#bgGrad)"/>
+  <circle cx="200" cy="200" r="185" fill="url(#glowRing)"/>
+
+  <!-- Decorative rings in #a855f7 -->
+  <circle cx="200" cy="200" r="174" fill="none" stroke="#a855f7" stroke-width="1.2" opacity="0.28"/>
+  <circle cx="200" cy="200" r="167" fill="none" stroke="#a855f7" stroke-width="0.6" opacity="0.14"/>
+
+  <!-- ===== COIN STACK ===== -->
+  <ellipse cx="290" cy="300" rx="40" ry="12" fill="#1a0533" opacity="0.45" filter="url(#glow)"/>
+
+  <!-- Coin 4 (bottom) -->
+  <ellipse cx="286" cy="290" rx="36" ry="11" fill="#7A5500"/>
+  <ellipse cx="286" cy="282" rx="36" ry="11" fill="#B8860B"/>
+  <ellipse cx="286" cy="282" rx="29" ry="7.5" fill="none" stroke="#FFE066" stroke-width="1" opacity="0.4"/>
+
+  <!-- Coin 3 -->
+  <ellipse cx="286" cy="272" rx="36" ry="11" fill="#7A5500"/>
+  <ellipse cx="286" cy="264" rx="36" ry="11" fill="#C99A0F"/>
+  <ellipse cx="286" cy="264" rx="29" ry="7.5" fill="none" stroke="#FFE066" stroke-width="1" opacity="0.5"/>
+
+  <!-- Coin 2 -->
+  <ellipse cx="286" cy="254" rx="36" ry="11" fill="#886000"/>
+  <ellipse cx="286" cy="246" rx="36" ry="11" fill="#D4A910"/>
+  <ellipse cx="286" cy="246" rx="29" ry="7.5" fill="none" stroke="#FFE44D" stroke-width="1" opacity="0.55"/>
+
+  <!-- Coin 1 (top, glowing gold) -->
+  <ellipse cx="286" cy="235" rx="36" ry="11" fill="#886000"/>
+  <ellipse cx="286" cy="226" rx="36" ry="11" fill="url(#coinGrad)" filter="url(#goldGlow)"/>
+  <ellipse cx="286" cy="226" rx="29" ry="7.5" fill="none" stroke="#FFF9C4" stroke-width="1.5" opacity="0.85"/>
+  <text x="286" y="231" text-anchor="middle" font-family="Georgia,serif" font-size="14" font-weight="bold" fill="#7A5000">$</text>
+
+  <!-- ===== PLATE ===== -->
+  <ellipse cx="197" cy="300" rx="108" ry="18" fill="#1a0533" opacity="0.4" filter="url(#glow)"/>
+  <ellipse cx="197" cy="284" rx="108" ry="23" fill="url(#plateRim)" filter="url(#plateShadow)"/>
+  <ellipse cx="197" cy="279" rx="108" ry="23" fill="url(#plateGrad)"/>
+  <ellipse cx="197" cy="278" rx="90"  ry="17" fill="none" stroke="#9CA3AF" stroke-width="1.5" opacity="0.45"/>
+  <ellipse cx="197" cy="278" rx="82"  ry="14" fill="none" stroke="#D1D5DB" stroke-width="0.8" opacity="0.35"/>
+
+  <!-- ===== BURGER ===== -->
+  <!-- Bun bottom -->
+  <ellipse cx="197" cy="276" rx="66" ry="12" fill="#92400E"/>
+  <ellipse cx="197" cy="269" rx="66" ry="12" fill="url(#bunBotGrad)"/>
+
+  <!-- Lettuce -->
+  <path d="M131,266 Q139,256 148,266 Q156,256 165,266 Q173,256 182,266 Q190,256 199,266 Q207,256 216,266 Q224,256 233,266 Q241,256 250,266 Q257,256 264,266"
+        fill="none" stroke="#15803D" stroke-width="10" stroke-linecap="round" opacity="0.9"/>
+  <ellipse cx="197" cy="265" rx="67" ry="10" fill="#22C55E" opacity="0.75"/>
+
+  <!-- Tomato -->
+  <ellipse cx="197" cy="257" rx="62" ry="10" fill="#EF4444"/>
+  <ellipse cx="197" cy="255" rx="62" ry="8"  fill="#F87171" opacity="0.45"/>
+  <line x1="168" y1="250" x2="168" y2="263" stroke="#DC2626" stroke-width="1.2" opacity="0.5"/>
+  <line x1="183" y1="249" x2="183" y2="264" stroke="#DC2626" stroke-width="1.2" opacity="0.5"/>
+  <line x1="197" y1="249" x2="197" y2="264" stroke="#DC2626" stroke-width="1.2" opacity="0.5"/>
+  <line x1="211" y1="249" x2="211" y2="264" stroke="#DC2626" stroke-width="1.2" opacity="0.5"/>
+  <line x1="226" y1="250" x2="226" y2="263" stroke="#DC2626" stroke-width="1.2" opacity="0.5"/>
+
+  <!-- Cheese -->
+  <path d="M137,248 Q165,256 197,248 Q229,240 259,248 L261,239 L135,239 Z" fill="#FCD34D"/>
+  <path d="M137,248 L135,239 L261,239 L259,248 Q229,240 197,248 Q165,256 137,248 Z" fill="#F59E0B" opacity="0.35"/>
+
+  <!-- Patty -->
+  <ellipse cx="197" cy="237" rx="62" ry="11" fill="#3B0D00"/>
+  <ellipse cx="197" cy="232" rx="62" ry="11" fill="#6B2D0A"/>
+  <path d="M150,228 Q165,225 180,228" fill="none" stroke="#3B0D00" stroke-width="3" stroke-linecap="round" opacity="0.6"/>
+  <path d="M190,226 Q210,223 228,227" fill="none" stroke="#3B0D00" stroke-width="3" stroke-linecap="round" opacity="0.5"/>
+  <path d="M155,234 Q175,231 195,234" fill="none" stroke="#3B0D00" stroke-width="2.5" stroke-linecap="round" opacity="0.45"/>
+
+  <!-- Bun top dome -->
+  <ellipse cx="197" cy="226" rx="64" ry="12" fill="#92400E"/>
+  <path d="M133,222 Q133,175 197,170 Q261,175 261,222 Z" fill="#F59E0B"/>
+  <path d="M133,218 Q133,170 197,164 Q261,170 261,218 Z" fill="url(#bunTopGrad)"/>
+  <ellipse cx="180" cy="183" rx="26" ry="12" fill="white" opacity="0.12"/>
+  <ellipse cx="175" cy="180" rx="14" ry="7"  fill="white" opacity="0.10"/>
+
+  <!-- Sesame seeds -->
+  <ellipse cx="178" cy="178" rx="6"   ry="2.8" fill="#92400E" opacity="0.85" transform="rotate(-22,178,178)"/>
+  <ellipse cx="199" cy="172" rx="6"   ry="2.8" fill="#92400E" opacity="0.85" transform="rotate(5,199,172)"/>
+  <ellipse cx="219" cy="179" rx="6"   ry="2.8" fill="#92400E" opacity="0.85" transform="rotate(28,219,179)"/>
+  <ellipse cx="190" cy="189" rx="5.5" ry="2.5" fill="#92400E" opacity="0.8"  transform="rotate(-12,190,189)"/>
+  <ellipse cx="210" cy="186" rx="5.5" ry="2.5" fill="#92400E" opacity="0.8"  transform="rotate(18,210,186)"/>
+  <ellipse cx="170" cy="192" rx="5"   ry="2.2" fill="#92400E" opacity="0.75" transform="rotate(-28,170,192)"/>
+
+  <!-- ===== UTENSILS ===== -->
+  <!-- Knife -->
+  <rect x="112" y="228" width="11" height="52" rx="5.5" fill="#4B5563"/>
+  <path d="M112,182 Q112,178 117.5,175 Q123,178 123,182 L123,232 L112,232 Z" fill="#9CA3AF"/>
+  <rect x="111" y="225" width="13" height="9" rx="4" fill="#374151"/>
+
+  <!-- Fork -->
+  <rect x="137" y="228" width="11" height="52" rx="5.5" fill="#4B5563"/>
+  <rect x="137" y="200" width="11" height="32" rx="3" fill="#9CA3AF"/>
+  <line x1="135"   y1="167" x2="135"   y2="203" stroke="#9CA3AF" stroke-width="3.2" stroke-linecap="round"/>
+  <line x1="140.5" y1="163" x2="140.5" y2="203" stroke="#9CA3AF" stroke-width="3.2" stroke-linecap="round"/>
+  <line x1="146"   y1="163" x2="146"   y2="203" stroke="#9CA3AF" stroke-width="3.2" stroke-linecap="round"/>
+  <line x1="151.5" y1="167" x2="151.5" y2="203" stroke="#9CA3AF" stroke-width="3.2" stroke-linecap="round"/>
+  <path d="M135,199 Q143.25,206 151.5,199" fill="none" stroke="#9CA3AF" stroke-width="3"/>
+  <rect x="136" y="225" width="13" height="9" rx="4" fill="#374151"/>
+
+  <!-- ===== GOLD DOLLAR BADGE ===== -->
+  <circle cx="308" cy="112" r="52" fill="#FFD700" opacity="0.12" filter="url(#glow)"/>
+  <circle cx="308" cy="112" r="42" fill="#3b0764" stroke="#FFD700" stroke-width="2.5" filter="url(#shadow)"/>
+  <circle cx="308" cy="112" r="35" fill="url(#badgeGrad)" filter="url(#goldGlow)"/>
+  <circle cx="308" cy="112" r="29" fill="none" stroke="#FFF9C4" stroke-width="1.2" opacity="0.7"/>
+  <text x="308" y="123" text-anchor="middle" font-family="Georgia,serif" font-size="32" font-weight="bold" fill="#7A5000">$</text>
+
+  <!-- ===== SCATTERED SMALL COINS ===== -->
+  <circle cx="112" cy="318" r="16" fill="#886000" filter="url(#glow)"/>
+  <circle cx="112" cy="318" r="13" fill="url(#coinGrad)"/>
+  <circle cx="112" cy="318" r="10" fill="none" stroke="#FFF9C4" stroke-width="1" opacity="0.65"/>
+  <text x="112" y="323" text-anchor="middle" font-family="Georgia,serif" font-size="12" font-weight="bold" fill="#7A5000">$</text>
+
+  <circle cx="82" cy="272" r="11" fill="#7A5500" filter="url(#glow)"/>
+  <circle cx="82" cy="272" r="9"  fill="url(#coinGrad)"/>
+  <text x="82" y="276" text-anchor="middle" font-family="Georgia,serif" font-size="9" font-weight="bold" fill="#7A5000">$</text>
+
+  <!-- ===== SPARKLE STARS (gold) ===== -->
+  <g transform="translate(90,118)">
+    <path d="M0,-16 L2.5,-2.5 L16,0 L2.5,2.5 L0,16 L-2.5,2.5 L-16,0 L-2.5,-2.5 Z" fill="#FFD700" opacity="0.85"/>
+  </g>
+  <g transform="translate(330,200)">
+    <path d="M0,-9 L1.5,-1.5 L9,0 L1.5,1.5 L0,9 L-1.5,1.5 L-9,0 L-1.5,-1.5 Z" fill="#FFC300" opacity="0.7"/>
+  </g>
+  <g transform="translate(155,135)">
+    <path d="M0,-6 L1,-1 L6,0 L1,1 L0,6 L-1,1 L-6,0 L-1,-1 Z" fill="#FFE066" opacity="0.65"/>
+  </g>
+
+  <!-- Accent dots -->
+  <circle cx="200" cy="44"  r="3.5" fill="#a855f7" opacity="0.5"/>
+  <circle cx="355" cy="200" r="3.5" fill="#a855f7" opacity="0.5"/>
+  <circle cx="45"  cy="200" r="3.5" fill="#a855f7" opacity="0.5"/>
+  <circle cx="200" cy="356" r="3.5" fill="#a855f7" opacity="0.5"/>
+  <circle cx="340" cy="92"  r="2.5" fill="#FFD700"  opacity="0.38"/>
+  <circle cx="65"  cy="318" r="2.5" fill="#FFD700"  opacity="0.38"/>
+</svg>
