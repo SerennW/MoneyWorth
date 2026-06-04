@@ -2,6 +2,9 @@
 
 A social posting app where users share food and dining experiences, with upvote/downvote voting.
 
+The website can be accessed through this link: 
+https://moneyworth.vercel.app
+
 ## Features
 
 - Create posts with title, description, location, tags, and up to 10 images
