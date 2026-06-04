@@ -10,7 +10,3 @@ users.json
 *.log
 npm-debug.log*
 scripts/
-~$*
-*.docx
-*.pdf
-
