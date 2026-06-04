@@ -1,6 +1,12 @@
 node_modules/
 uploads/
 .env
+.env.local
+.env*.local
 moneyworth.json
 users.json
 .claude/
+.vercel/
+*.log
+npm-debug.log*
+scripts/
