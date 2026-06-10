@@ -21,7 +21,7 @@ https://moneyworth.vercel.app
 |---|---|
 | Frontend | Vanilla HTML, CSS, JavaScript |
 | Backend | Node.js, Express 4 |
-| Database | PostgreSQL (Neon in production) |
+| Database | PostgreSQL (Supabase in production) |
 | Auth | JWT + bcryptjs |
 | Image Storage | Supabase Storage |
 | Deployment | Vercel (serverless) |
@@ -31,8 +31,8 @@ https://moneyworth.vercel.app
 ### Prerequisites
 
 - Node.js 18+
-- PostgreSQL 14+ (local) or a [Neon](https://neon.tech) database
-- A [Supabase](https://supabase.com) project with a public Storage bucket named `posts`
+- PostgreSQL 14+ (local) or a [Supabase](https://supabase.com) project
+- A [Supabase](https://supabase.com) Storage bucket (public) named `posts` for image uploads
 
 ### Setup
 
@@ -81,7 +81,7 @@ The app will be available at `http://localhost:3000`. Tables are created automat
 | `npm run dev` | Start dev server with auto-restart (nodemon) |
 | `npm run reset` | Clear all database data and Supabase Storage images |
 
-## Deployment (Vercel + Neon + Supabase)
+## Deployment (Vercel + Supabase)
 
 1. Push this repo to GitHub.
 2. Import the repo on [Vercel](https://vercel.com).
@@ -89,7 +89,7 @@ The app will be available at `http://localhost:3000`. Tables are created automat
 
 | Variable | Description |
 |---|---|
-| `DATABASE_URL` | Neon PostgreSQL connection string |
+| `DATABASE_URL` | Supabase PostgreSQL connection string (Transaction pooler) |
 | `JWT_SECRET` | Long random string — generate with `openssl rand -hex 32` |
 | `NODE_ENV` | `production` |
 | `SUPABASE_URL` | Your Supabase project URL |
