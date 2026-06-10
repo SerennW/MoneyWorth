@@ -17,15 +17,16 @@
 | Frontend | Vanilla HTML5, CSS3, JavaScript (ES2020+) |
 | Backend | Node.js 24, Express 4 |
 | Auth | JSON Web Tokens (`jsonwebtoken`), `bcryptjs` |
-| File Handling | Multer (multipart uploads) |
-| Database | Flat-file JSON (`moneyworth.json`, `users.json`) |
-| Asset Storage | Local filesystem (`uploads/`) |
+| File Handling | Multer (in-memory multipart uploads) |
+| Database | PostgreSQL (managed via Supabase, `pg` driver) |
+| Asset Storage | Supabase Storage (`posts` bucket) |
+| Hosting | Vercel (serverless functions) |
 
 ---
 
 ## Architecture
 
-MoneyWorth follows a **single-tier client-server** pattern. The Express server serves the static frontend and exposes a REST API from the same process and origin, eliminating CORS entirely.
+MoneyWorth follows a **client-server** pattern. The Express server serves the static frontend and exposes a REST API from the same process and origin, eliminating CORS entirely. It runs as a Vercel serverless function in production, persisting structured data to a managed PostgreSQL database (Supabase) and image files to Supabase Storage.
 
 ```
 ┌─────────────────────────────────────────────────────────┐
@@ -41,7 +42,7 @@ MoneyWorth follows a **single-tier client-server** pattern. The Express server s
 └──────────────────────────────┬──────────────────────────┘
                      HTTP/REST (same origin)
 ┌──────────────────────────────┴──────────────────────────┐
-│                    Express Server                       │
+│            Express Server (Vercel serverless)           │
 │                                                         │
 │  express.static ──► serves index.html, app.js, CSS      │
 │                                                         │
@@ -53,16 +54,16 @@ MoneyWorth follows a **single-tier client-server** pattern. The Express server s
 │  requireAuth middleware (JWT verify)                    │
 │                                                         │
 └──────┬─────────────────────────────┬────────────────────┘
-       │                             │
-┌──────▼──────┐               ┌──────▼──────────────┐
-│  JSON Files │               │  uploads/ directory  │
-│             │               │                      │
-│ users.json  │               │  <timestamp>-<rand>  │
-│ posts.json  │               │  .jpg / .png / ...   │
-│  (bcrypt    │               │                      │
-│   hashes,   │               │  served at           │
-│  vote maps) │               │  /uploads/:filename  │
-└─────────────┘               └──────────────────────┘
+       │ pg (pooled)                 │ @supabase/supabase-js
+┌──────▼───────────────┐     ┌───────▼──────────────────┐
+│  PostgreSQL (Supabase)│     │  Supabase Storage        │
+│                       │     │  (`posts` bucket)        │
+│  users   posts        │     │                          │
+│  votes   post_tags    │     │  <timestamp>-<rand>      │
+│  post_images          │     │  .jpg / .png / ...       │
+│  (bcrypt hashes,      │     │                          │
+│   PK(user_id,post_id))│     │  public URL per file     │
+└───────────────────────┘     └──────────────────────────┘
 ```
 
 ### API Endpoints
@@ -89,9 +90,9 @@ The UI is a single page with a feed, three modals, and a detail panel — a fram
 
 Express was chosen for its minimal surface area. The API has six endpoints. Frameworks like NestJS or Fastify impose decorators, modules, and boilerplate that provide no value at this scale. Express lets each route be readable in one glance and requires no knowledge beyond standard HTTP concepts.
 
-### Flat-file JSON instead of SQLite or PostgreSQL
+### PostgreSQL (via Supabase) instead of flat-file JSON
 
-This is a project running on a single machine with a small number of users. A database server would require a separate process, a connection pool, and schema migrations for every structural change. JSON files are zero-dependency, human-readable, and can be reset with a single `npm run reset`. The trade-off — no concurrent write safety, no indexing — is acceptable because the load is effectively single-user development traffic.
+An early version of the app used flat-file JSON, but that approach has no concurrent-write safety and cannot run on a serverless host with an ephemeral filesystem. PostgreSQL was chosen because the data is inherently relational (users, posts, tags, images, and votes) and benefits from foreign keys, indexing, and transactional writes — for example, creating a post and its tags/images atomically. Supabase provides a managed PostgreSQL instance plus object storage, so no database server has to be self-hosted. In production the server connects through Supabase's **Transaction pooler**, which is required for short-lived serverless connections.
 
 ### JWT over server-side sessions
 
@@ -101,6 +102,10 @@ Sessions require server-side state storage such as memory or a session store lik
 
 bcrypt is the standard choice for password hashing because its work factor is intentionally slow and configurable, making brute-force and dictionary attacks computationally expensive. The pure-JS `bcryptjs` variant was used specifically to avoid native compilation via `node-gyp`, which can break across machines and Node.js versions.
 
-### Per-user vote tracking inside the post document
+### Dedicated `votes` table with a composite primary key
 
-Rather than a separate votes collection, each post stores a `votes` map of the form `{ userId: 'up' | 'down' }`. This keeps vote data co-located with the post it belongs to, avoids a second read on every vote request, and allows the `GET /api/posts` endpoint to inject the requesting user's `myVote` field in a single pass over the data. The trade-off is that the post document grows with each voter, which is acceptable at this scale.
+Votes live in their own table keyed by `(user_id, post_id)`. The composite primary key enforces, at the database level, that each user can hold at most one vote per post — making the "one user, one vote" rule a structural guarantee rather than application logic that could be bypassed under concurrency. Aggregate up/down counts are computed with SQL, and the requesting user's own vote (`myVote`) is resolved per post via a correlated subquery in the `GET /api/posts` query. Casting a vote uses an `INSERT ... ON CONFLICT DO UPDATE` upsert, and retracting one is a simple `DELETE`.
+
+### Supabase Storage instead of local disk for images
+
+Vercel's serverless filesystem is ephemeral, so uploaded files written to disk would not persist between invocations. Multer is therefore configured with in-memory storage, and each image buffer is uploaded to a Supabase Storage bucket; the database stores only the filename, and a public URL is constructed on read. Deleting a post or account also removes its associated objects from the bucket.
