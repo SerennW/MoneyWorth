@@ -9,4 +9,3 @@ users.json
 .vercel/
 *.log
 npm-debug.log*
-scripts/
